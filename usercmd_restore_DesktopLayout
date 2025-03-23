@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# 设置 iCloud 云盘路径
+ICLOUD_PATH="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
+
+# 获取本机名称
+COMPUTER_NAME=$(scutil --get ComputerName)
+
+# 设置备份根路径
+BACKUP_PATH="$ICLOUD_PATH/BACKUP/$COMPUTER_NAME"
+DESKTOP_LAYOUT_BACKUP_DIR="$BACKUP_PATH/DesktopLayout"
+
+# 检查备份目录是否存在
+if [ ! -d "$DESKTOP_LAYOUT_BACKUP_DIR" ]; then
+    echo "错误：备份目录 $DESKTOP_LAYOUT_BACKUP_DIR 不存在"
+    exit 1
+fi
+
+# 扫描所有备份日期，并按日期降序排序
+BACKUP_DATES=($(ls -1 "$DESKTOP_LAYOUT_BACKUP_DIR" | sort -r))
+
+# 检查是否有备份
+if [ ${#BACKUP_DATES[@]} -eq 0 ]; then
+    echo "错误：没有找到任何备份日期"
+    exit 1
+fi
+
+# 显示可用的备份日期并让用户选择
+echo "可用的备份日期（从新到旧）："
+for i in "${!BACKUP_DATES[@]}"; do
+    echo "$((i+1)). ${BACKUP_DATES[$i]}"
+done
+
+read -p "请输入要还原的日期编号: " SELECTED_INDEX
+
+# 验证用户输入是否有效
+if ! [[ "$SELECTED_INDEX" =~ ^[0-9]+$ ]] || [ "$SELECTED_INDEX" -lt 1 ] || [ "$SELECTED_INDEX" -gt "${#BACKUP_DATES[@]}" ]; then
+    echo "错误：无效的编号"
+    exit 1
+fi
+
+# 获取用户选择的日期和对应的备份目录
+SELECTED_DATE="${BACKUP_DATES[$((SELECTED_INDEX-1))]}"
+SELECTED_BACKUP_DIR="$DESKTOP_LAYOUT_BACKUP_DIR/$SELECTED_DATE"
+
+# 设置原始文件路径
+PATH_DesktopLayout_SOURCE1="$HOME/Library/Preferences"
+
+# 动态获取 com.apple.dock.launchpad 的原始路径
+USER_ID=$(basename "$(dirname "$TMPDIR")")
+PARENT_DIR=$(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$USER_ID" 2>/dev/null)
+PATH_DesktopLayout_SOURCE2="$PARENT_DIR/0"
+
+# 检查备份文件是否存在
+if [ ! -f "$SELECTED_BACKUP_DIR/com.apple.spaces.plist" ] || \
+   [ ! -f "$SELECTED_BACKUP_DIR/com.apple.dock.plist" ] || \
+   [ ! -d "$SELECTED_BACKUP_DIR/com.apple.dock.launchpad" ]; then
+    echo "错误：所选日期的备份文件不完整"
+    exit 1
+fi
+
+# 执行还原操作
+echo "正在还原备份..."
+cp -rf "$SELECTED_BACKUP_DIR/com.apple.spaces.plist" "$PATH_DesktopLayout_SOURCE1/com.apple.spaces.plist"
+cp -rf "$SELECTED_BACKUP_DIR/com.apple.dock.plist" "$PATH_DesktopLayout_SOURCE1/com.apple.dock.plist"
+sudo cp -rf "$SELECTED_BACKUP_DIR/com.apple.dock.launchpad" "$PATH_DesktopLayout_SOURCE2"
+
+# 重启 Dock 以应用更改
+killall Dock
+
+# 显示完成信息
+echo "还原 “Launchpad 布局” 已完成！"

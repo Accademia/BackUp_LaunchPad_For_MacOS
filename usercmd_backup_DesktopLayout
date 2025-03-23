@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# --------------------------------
+# 用于备份LaunchPad的APP分组与布局
+# ---------------------------------
+
+
+#----------------------
+# 存放备份的路径
+#----------------------
+
+# 设置 iCloud 云盘路径
+ICLOUD_PATH="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
+# 获取本机名称（并以本机名称作为子文件夹名称）
+COMPUTER_NAME=$(scutil --get ComputerName)
+# 备份目录的起始路径
+BACKUP_PATH="$ICLOUD_PATH/BACKUP/$COMPUTER_NAME"
+# 备份文件的最终保存路径
+PATH_DesktopLayout_BACKUP="$BACKUP_PATH/DesktopLayout/$(date +%Y-%m-%d)/"
+
+
+#----------------------
+# 源文件的路径
+#----------------------
+PATH_DesktopLayout_plist_SOURCE="$HOME/Library/Preferences"
+
+# 从 TMPDIR 中提取用户特定的 ID
+USER_ID=$(basename "$(dirname "$TMPDIR")")
+# 查找包含该 ID 的父目录
+PARENT_DIR=$(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$USER_ID" 2>/dev/null)
+# 设置 Launchpad 布局源路径
+PATH_DesktopLayout_db_SOURCE="$PARENT_DIR/0"
+
+
+#----------------------
+# 创建备份文件夹
+#----------------------
+
+mkdir -p "$BACKUP_PATH"
+mkdir -p "$PATH_DesktopLayout_BACKUP"
+
+
+#----------------------
+# 执行备份操作
+#----------------------
+
+cp -rf "$PATH_DesktopLayout_plist_SOURCE/com.apple.spaces.plist"  "$PATH_DesktopLayout_BACKUP/"
+cp -rf "$PATH_DesktopLayout_plist_SOURCE/com.apple.dock.plist"  "$PATH_DesktopLayout_BACKUP/"
+sudo cp -rf "$PATH_DesktopLayout_db_SOURCE/com.apple.dock.launchpad"  "$PATH_DesktopLayout_BACKUP/"
+cd "$PATH_DesktopLayout_BACKUP"
+sudo chmod -R 755 ./com.apple.dock.launchpad
+
+
+#----------------------
+# 显示结果
+#----------------------
+
+echo "备份 “桌面图标” 已完成！！！"
+ls -l "$PATH_DesktopLayout_BACKUP"
+
+
+#----------------------
+# 调试信息（可选）
+#----------------------
+
+echo ""
+echo "TMPDIR: $TMPDIR"
+echo "USER_ID: $USER_ID"
+echo "PARENT_DIR: $PARENT_DIR"
+echo "PATH_DesktopLayout_db_SOURCE: $PATH_DesktopLayout_db_SOURCE"

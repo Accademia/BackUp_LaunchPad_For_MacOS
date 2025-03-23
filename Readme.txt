@@ -40,3 +40,10 @@
 你的用户名 ALL=(ALL) NOPASSWD: SETENV: /bin/chmod  -R 755 ./com.apple.dock.launchpad
 
 你的用户名 ALL=(ALL) NOPASSWD: SETENV: /bin/cp -rf */com.apple.dock.launchpad /System/Volumes/Data/private/var/folders/*/0
+
+
+# -------
+# 版权：
+# -------
+	+ 遵从MIT协议
+	+ 所有代码全部来自于 SuperGork AI Think 编写（仅经过微量删减）

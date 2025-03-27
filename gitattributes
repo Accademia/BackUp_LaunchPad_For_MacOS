@@ -1,0 +1,2 @@
+*.bat linguist-language=Batchfile
+*.cmd linguist-language=Batchfile

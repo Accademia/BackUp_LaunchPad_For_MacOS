@@ -46,4 +46,4 @@
 # 版权：
 # -------
 	+ 遵从MIT协议
-	+ 所有代码全部来自于 SuperGork AI Think 编写（仅经过微量删减）
+	+ 所有代码全部来自于 SuperGork Think 编写（仅经过微量删减）

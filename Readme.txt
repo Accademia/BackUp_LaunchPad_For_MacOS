@@ -10,19 +10,22 @@
  
 
 # -------
-# 备份命令：
+# 命令说明：
 # -------
-	usercmd_backup_DesktopLayout
+	usercmd_backup_DesktopLayout	# 备份
+	usercmd_restore_DesktopLayout	# 还原
+	
+	
+# -------
+# 路径建议：
+# -------
+
+ 	/usr/local/bin/usercmd_backup_DesktopLayout
+	/usr/local/bin/usercmd_restore_DesktopLayout
 
 
 # -------
-# 还原命令：
-# -------
-	usercmd_restore_DesktopLayout
-
-
-# -------
-# 建议：
+# 使用建议：
 # -------
 
 	+ 可以将备份命令加到自动任务当中，从而每日自动备份。
@@ -46,4 +49,4 @@
 # 版权：
 # -------
 	+ 遵从MIT协议
-	+ 所有代码全部来自于 SuperGork Think 编写（仅经过微量删减）
+	+ 所有代码全部来自于 SuperGrok Think 编写（仅经过微量删减）

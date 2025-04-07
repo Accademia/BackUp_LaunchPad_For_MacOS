@@ -34,6 +34,8 @@ PATH_DesktopLayout_db_SOURCE="$PARENT_DIR/0"
 # 命令行等效命令
 # echo $(find $(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$(basename "$(dirname "$TMPDIR")")" 2>/dev/null) -maxdepth 2 -type d -name "com.apple.dock.launchpad" 2>/dev/null)
 
+SCRIPT_PATH="$(realpath "$0")"
+parent_path=$(dirname "$SCRIPT_PATH")
 
 #----------------------
 # 创建备份文件夹
@@ -50,6 +52,8 @@ mkdir -p "$PATH_DesktopLayout_BACKUP"
 cp -rf "$PATH_DesktopLayout_plist_SOURCE/com.apple.spaces.plist"  "$PATH_DesktopLayout_BACKUP/"
 cp -rf "$PATH_DesktopLayout_plist_SOURCE/com.apple.dock.plist"  "$PATH_DesktopLayout_BACKUP/"
 sudo cp -rf "$PATH_DesktopLayout_db_SOURCE/com.apple.dock.launchpad"  "$PATH_DesktopLayout_BACKUP/"
+cp "$SCRIPT_PATH" "$PATH_DesktopLayout_BACKUP/"
+cp "$parent_path/usercmd_restore_DesktopLayout" "$PATH_DesktopLayout_BACKUP/"
 cd "$PATH_DesktopLayout_BACKUP"
 sudo chmod -R 755 ./com.apple.dock.launchpad
 

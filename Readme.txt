@@ -56,6 +56,11 @@
 echo $(find $(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$(basename "$(dirname "$TMPDIR")")" 2>/dev/null) -maxdepth 2 -type d -name "com.apple.dock.launchpad" 2>/dev/null)
 
 
+# 重启 控制台
+
+killall Dock
+
+
 
 # -------
 # 版权：

@@ -51,6 +51,9 @@ USER_ID=$(basename "$(dirname "$TMPDIR")")
 PARENT_DIR=$(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$USER_ID" 2>/dev/null)
 PATH_DesktopLayout_SOURCE2="$PARENT_DIR/0"
 
+# 命令行等效命令
+# echo $(find $(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$(basename "$(dirname "$TMPDIR")")" 2>/dev/null) -maxdepth 2 -type d -name "com.apple.dock.launchpad" 2>/dev/null)
+
 # 检查备份文件是否存在
 if [ ! -f "$SELECTED_BACKUP_DIR/com.apple.spaces.plist" ] || \
    [ ! -f "$SELECTED_BACKUP_DIR/com.apple.dock.plist" ] || \
@@ -61,8 +64,8 @@ fi
 
 # 执行还原操作
 echo "正在还原备份..."
-cp -rf "$SELECTED_BACKUP_DIR/com.apple.spaces.plist" "$PATH_DesktopLayout_SOURCE1/com.apple.spaces.plist"
-cp -rf "$SELECTED_BACKUP_DIR/com.apple.dock.plist" "$PATH_DesktopLayout_SOURCE1/com.apple.dock.plist"
+cp -f "$SELECTED_BACKUP_DIR/com.apple.spaces.plist" "$PATH_DesktopLayout_SOURCE1/com.apple.spaces.plist"
+cp -f "$SELECTED_BACKUP_DIR/com.apple.dock.plist" "$PATH_DesktopLayout_SOURCE1/com.apple.dock.plist"
 sudo cp -rf "$SELECTED_BACKUP_DIR/com.apple.dock.launchpad" "$PATH_DesktopLayout_SOURCE2"
 
 # 重启 Dock 以应用更改

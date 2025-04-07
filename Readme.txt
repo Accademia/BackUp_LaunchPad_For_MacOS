@@ -45,8 +45,20 @@
 你的用户名 ALL=(ALL) NOPASSWD: SETENV: /bin/cp -rf */com.apple.dock.launchpad /System/Volumes/Data/private/var/folders/*/0
 
 
+
+# -------
+# 手动命令
+# -------
+
+# 控制台布局 数据库文件 所在的路径
+# 备份还原本文件夹，即可 备份、还原 控制台布局。注意：在同一个Mac上，即便是不同的用户ID，也可以做到无缝拷贝布局
+
+echo $(find $(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$(basename "$(dirname "$TMPDIR")")" 2>/dev/null) -maxdepth 2 -type d -name "com.apple.dock.launchpad" 2>/dev/null)
+
+
+
 # -------
 # 版权：
 # -------
 	+ 遵从MIT协议
-	+ 所有代码全部来自于 SuperGrok Think 编写（仅经过微量删减）
+	+ 所有代码全部来自于 xAI SuperGrok Think 编写（仅经过微量删减）

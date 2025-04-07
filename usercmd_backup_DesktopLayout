@@ -31,6 +31,9 @@ PARENT_DIR=$(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d 
 # 设置 Launchpad 布局源路径
 PATH_DesktopLayout_db_SOURCE="$PARENT_DIR/0"
 
+# 命令行等效命令
+# echo $(find $(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$(basename "$(dirname "$TMPDIR")")" 2>/dev/null) -maxdepth 2 -type d -name "com.apple.dock.launchpad" 2>/dev/null)
+
 
 #----------------------
 # 创建备份文件夹

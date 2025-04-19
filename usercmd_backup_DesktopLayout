@@ -1,3 +1,4 @@
+# 备份代码：
 #!/bin/bash
 
 # --------------------------------
@@ -11,10 +12,12 @@
 
 # 设置 iCloud 云盘路径
 ICLOUD_PATH="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
-# 获取本机名称（并以本机名称作为子文件夹名称）
+# 获取本机名称（作为子文件夹名称）
 COMPUTER_NAME=$(scutil --get ComputerName)
+# 获取当前用户名（作为子文件夹名称） 注意，自动删除用户名中的所有空格！
+USER_NAME=$USER
 # 备份目录的起始路径
-BACKUP_PATH="$ICLOUD_PATH/BACKUP/$COMPUTER_NAME"
+BACKUP_PATH="$ICLOUD_PATH/BACKUP/$COMPUTER_NAME/$USER_NAME"
 # 备份文件的最终保存路径
 PATH_DesktopLayout_BACKUP="$BACKUP_PATH/DesktopLayout/$(date +%Y-%m-%d)/"
 

@@ -6,8 +6,12 @@ ICLOUD_PATH="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 # 获取本机名称
 COMPUTER_NAME=$(scutil --get ComputerName)
 
-# 设置备份根路径
-BACKUP_PATH="$ICLOUD_PATH/BACKUP/$COMPUTER_NAME"
+# 获取当前用户名（作为子文件夹名称）注意，自动删除用户名中的所有空格！
+USER_NAME=$USER
+# 备份目录的起始路径！！
+BACKUP_PATH="$ICLOUD_PATH/BACKUP/$COMPUTER_NAME/$USER_NAME"
+
+# 备份根目录！！
 DESKTOP_LAYOUT_BACKUP_DIR="$BACKUP_PATH/DesktopLayout"
 
 # 检查备份目录是否存在

@@ -17,11 +17,20 @@
 	
 	
 # -------
-# 路径建议：
+# 命令路径：(建议的，此命令存放的路径)
 # -------
 
  	/usr/local/bin/usercmd_backup_DesktopLayout
 	/usr/local/bin/usercmd_restore_DesktopLayout
+
+
+# -------
+# 保存路径：(备份数据保存在哪里)
+# -------
+
+	/iCloud/计算机名称/用户名称/DesktopLayout
+
+	# 注意：执行保存还原时，路径上的用户名中的空格，会被自动删除。
 
 
 # -------

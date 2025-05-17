@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # 设置 iCloud 云盘路径
 ICLOUD_PATH="$HOME/Library/Mobile Documents/com~apple~CloudDocs"

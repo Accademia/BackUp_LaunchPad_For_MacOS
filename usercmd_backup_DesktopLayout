@@ -35,7 +35,7 @@ PARENT_DIR=$(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d 
 PATH_DesktopLayout_db_SOURCE="$PARENT_DIR/0"
 
 # 命令行等效命令
-# echo $(find $(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$(basename "$(dirname "$TMPDIR")")" 2>/dev/null) -maxdepth 2 -type d -name "com.apple.dock.launchpad" 2>/dev/null)
+# echo -e $(find $(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$(basename "$(dirname "$TMPDIR")")" 2>/dev/null) -maxdepth 2 -type d -name "com.apple.dock.launchpad" 2>/dev/null)
 
 SCRIPT_PATH="$(realpath "$0")"
 parent_path=$(dirname "$SCRIPT_PATH")
@@ -65,7 +65,7 @@ sudo chmod -R 755 ./com.apple.dock.launchpad
 # 显示结果
 #----------------------
 
-echo "备份 “桌面图标” 已完成！！！"
+echo -e "备份 “桌面图标” 已完成！！！"
 ls -l "$PATH_DesktopLayout_BACKUP"
 
 
@@ -73,8 +73,8 @@ ls -l "$PATH_DesktopLayout_BACKUP"
 # 调试信息（可选）
 #----------------------
 
-echo ""
-echo "TMPDIR: $TMPDIR"
-echo "USER_ID: $USER_ID"
-echo "PARENT_DIR: $PARENT_DIR"
-echo "PATH_DesktopLayout_db_SOURCE: $PATH_DesktopLayout_db_SOURCE"
+echo -e ""
+echo -e "TMPDIR: $TMPDIR"
+echo -e "USER_ID: $USER_ID"
+echo -e "PARENT_DIR: $PARENT_DIR"
+echo -e "PATH_DesktopLayout_db_SOURCE: $PATH_DesktopLayout_db_SOURCE"

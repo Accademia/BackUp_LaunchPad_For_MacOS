@@ -16,7 +16,7 @@ DESKTOP_LAYOUT_BACKUP_DIR="$BACKUP_PATH/DesktopLayout"
 
 # 检查备份目录是否存在
 if [ ! -d "$DESKTOP_LAYOUT_BACKUP_DIR" ]; then
-    echo "错误：备份目录 $DESKTOP_LAYOUT_BACKUP_DIR 不存在"
+    echo -e "错误：备份目录 $DESKTOP_LAYOUT_BACKUP_DIR 不存在"
     exit 1
 fi
 
@@ -25,21 +25,21 @@ BACKUP_DATES=($(ls -1 "$DESKTOP_LAYOUT_BACKUP_DIR" | sort -r))
 
 # 检查是否有备份
 if [ ${#BACKUP_DATES[@]} -eq 0 ]; then
-    echo "错误：没有找到任何备份日期"
+    echo -e "错误：没有找到任何备份日期"
     exit 1
 fi
 
 # 显示可用的备份日期并让用户选择
-echo "可用的备份日期（从新到旧）："
+echo -e "可用的备份日期（从新到旧）："
 for i in "${!BACKUP_DATES[@]}"; do
-    echo "$((i+1)). ${BACKUP_DATES[$i]}"
+    echo -e "$((i+1)). ${BACKUP_DATES[$i]}"
 done
 
 read -p "请输入要还原的日期编号: " SELECTED_INDEX
 
 # 验证用户输入是否有效
 if ! [[ "$SELECTED_INDEX" =~ ^[0-9]+$ ]] || [ "$SELECTED_INDEX" -lt 1 ] || [ "$SELECTED_INDEX" -gt "${#BACKUP_DATES[@]}" ]; then
-    echo "错误：无效的编号"
+    echo -e "错误：无效的编号"
     exit 1
 fi
 
@@ -56,18 +56,18 @@ PARENT_DIR=$(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d 
 PATH_DesktopLayout_SOURCE2="$PARENT_DIR/0"
 
 # 命令行等效命令
-# echo $(find $(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$(basename "$(dirname "$TMPDIR")")" 2>/dev/null) -maxdepth 2 -type d -name "com.apple.dock.launchpad" 2>/dev/null)
+# echo -e $(find $(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$(basename "$(dirname "$TMPDIR")")" 2>/dev/null) -maxdepth 2 -type d -name "com.apple.dock.launchpad" 2>/dev/null)
 
 # 检查备份文件是否存在
 if [ ! -f "$SELECTED_BACKUP_DIR/com.apple.spaces.plist" ] || \
    [ ! -f "$SELECTED_BACKUP_DIR/com.apple.dock.plist" ] || \
    [ ! -d "$SELECTED_BACKUP_DIR/com.apple.dock.launchpad" ]; then
-    echo "错误：所选日期的备份文件不完整"
+    echo -e "错误：所选日期的备份文件不完整"
     exit 1
 fi
 
 # 执行还原操作
-echo "正在还原备份..."
+echo -e "正在还原备份..."
 cp -f "$SELECTED_BACKUP_DIR/com.apple.spaces.plist" "$PATH_DesktopLayout_SOURCE1/com.apple.spaces.plist"
 cp -f "$SELECTED_BACKUP_DIR/com.apple.dock.plist" "$PATH_DesktopLayout_SOURCE1/com.apple.dock.plist"
 sudo cp -rf "$SELECTED_BACKUP_DIR/com.apple.dock.launchpad" "$PATH_DesktopLayout_SOURCE2"
@@ -76,4 +76,4 @@ sudo cp -rf "$SELECTED_BACKUP_DIR/com.apple.dock.launchpad" "$PATH_DesktopLayout
 killall Dock
 
 # 显示完成信息
-echo "还原 “Launchpad 布局” 已完成！"
+echo -e "还原 “Launchpad 布局” 已完成！"

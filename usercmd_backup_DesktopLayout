@@ -9,17 +9,47 @@
 # 存放备份的路径
 #----------------------
 
-# 设置 iCloud 云盘路径
-ICLOUD_PATH="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
-# 获取本机名称（作为子文件夹名称）
-COMPUTER_NAME=$(scutil --get ComputerName)
-# 获取当前用户名（作为子文件夹名称） 注意，自动删除用户名中的所有空格！
-USER_NAME=$USER
-# 备份目录的起始路径
-BACKUP_PATH="$ICLOUD_PATH/BACKUP/$COMPUTER_NAME/$USER_NAME"
-# 备份文件的最终保存路径
-PATH_DesktopLayout_BACKUP="$BACKUP_PATH/DesktopLayout/$(date +%Y-%m-%d)/"
+## 设置 iCloud 云盘路径
+#ICLOUD_PATH="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
+## 获取本机名称（作为子文件夹名称）
+#COMPUTER_NAME=$(scutil --get ComputerName)
+## 获取当前用户名（作为子文件夹名称） 注意，自动删除用户名中的所有空格！
+#USER_NAME=$USER
+## 备份目录的起始路径
+#BACKUP_PATH="$ICLOUD_PATH/BACKUP/$COMPUTER_NAME/$USER_NAME"
+## 备份文件的最终保存路径
+#PATH_DesktopLayout_BACKUP="$BACKUP_PATH/DesktopLayout/$(date +%Y-%m-%d)/"
 
+
+
+# 路径：保存日志文件的路径
+ICLOUD_PATH="$HOME/Library/Mobile Documents/com~apple~CloudDocs"            # 获取 iCloud 云盘路径，
+# 生成用于标识设备的目录名称。格式为“型号名称-芯片名称-序列号/用户名”。
+# 型号名称取自系统信息的 Model Name 并删除空格；芯片名称去掉 Apple 前缀并删除所有空格；序列号读取系统序列号。
+MODEL_NAME_RAW=$(system_profiler SPHardwareDataType 2>/dev/null | awk -F: '/Model Name/{print $2; exit}')
+MODEL_NAME_CLEAN=$(echo "${MODEL_NAME_RAW}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//;s/[[:space:]]//g')
+CPU_BRAND_RAW=$(sysctl -n machdep.cpu.brand_string 2>/dev/null)
+CPU_BRAND_TRIM=$(echo "${CPU_BRAND_RAW}" | sed 's/^Apple[[:space:]]*//;s/^[[:space:]]*//;s/[[:space:]]*$//')
+CPU_BRAND_CLEAN=$(echo "${CPU_BRAND_TRIM}" | sed 's/[[:space:]]//g')
+SERIAL_NUMBER_RAW=$(system_profiler SPHardwareDataType 2>/dev/null | awk -F: '/Serial Number/{print $2; exit}')
+SERIAL_NUMBER_CLEAN=$(echo "${SERIAL_NUMBER_RAW}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+USER_NAME="${USER:-$(whoami)}"
+DEVICE_DIR="${MODEL_NAME_CLEAN}-${CPU_BRAND_CLEAN}-${SERIAL_NUMBER_CLEAN}"
+# 清理多余的连字符
+DEVICE_DIR=$(echo "$DEVICE_DIR" | sed 's/--*/-/g; s/^-//; s/-$//')
+
+USER_ID=$(basename "$(dirname "$userTmpDir")")      # 提取TMPDIR路径中的随机目录ID
+PARENT_DIR=$(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$USER_ID" -print -quit 2>/dev/null)
+# 根据新的目录规则生成 BACKUP 路径。以设备标识目录（型号名称-芯片名称-序列号）为基础，并包含用户名目录。
+BACKUP_BASE="$ICLOUD_PATH/BACKUP/${DEVICE_DIR}"
+# 如果 BACKUP_BASE 末尾已包含用户名，则不再追加；否则追加用户名目录。
+if [[ "$BACKUP_BASE" == */"$USER_NAME" ]]; then
+    BACKUP_PATH="$BACKUP_BASE"
+else
+    BACKUP_PATH="$BACKUP_BASE/$USER_NAME"
+fi
+BACKUP_DATE=$(date +%Y-%m-%d)
+PATH_DesktopLayout_BACKUP="$BACKUP_PATH/DesktopLayout/$BACKUP_DATE"
 
 #----------------------
 # 源文件的路径

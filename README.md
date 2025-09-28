@@ -33,7 +33,7 @@ usercmd_restore_DesktopLayout	# 还原
 -------
 
 ```
-/iCloud/计算机名称/用户名称/DesktopLayout
+/iCloud/产品名-芯片型号-序列号/用户名称/DesktopLayout
 
 ```
 注意：执行保存还原时，路径上的用户名中的空格，会被自动删除。

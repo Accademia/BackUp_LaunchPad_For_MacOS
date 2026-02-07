@@ -13,8 +13,8 @@
 -------
 
 ```
-usercmd_backup_DesktopLayout	# 备份
-usercmd_restore_DesktopLayout	# 还原
+usercmd_backup_LaunchpadLayout	# 备份
+usercmd_restore_LaunchpadLayout	# 还原
 ```	
 .
 	
@@ -22,8 +22,8 @@ usercmd_restore_DesktopLayout	# 还原
 -------
 
 ```
-/usr/local/bin/usercmd_backup_DesktopLayout
-/usr/local/bin/usercmd_restore_DesktopLayout
+/usr/local/bin/usercmd_backup_LaunchpadLayout
+/usr/local/bin/usercmd_restore_LaunchpadLayout
 
 ```
 .
@@ -33,7 +33,7 @@ usercmd_restore_DesktopLayout	# 还原
 -------
 
 ```
-/iCloud/产品名-芯片型号-序列号/用户名称/DesktopLayout
+/iCloud/产品名-芯片型号-序列号/用户名称/LaunchpadLayout
 
 ```
 注意：执行保存还原时，路径上的用户名中的空格，会被自动删除。

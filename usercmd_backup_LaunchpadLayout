@@ -18,7 +18,7 @@
 ## 备份目录的起始路径
 #BACKUP_PATH="$ICLOUD_PATH/BACKUP/$COMPUTER_NAME/$USER_NAME"
 ## 备份文件的最终保存路径
-#PATH_DesktopLayout_BACKUP="$BACKUP_PATH/DesktopLayout/$(date +%Y-%m-%d)/"
+#PATH_LaunchpadLayout_BACKUP="$BACKUP_PATH/LaunchpadLayout/$(date +%Y-%m-%d)/"
 
 
 
@@ -49,19 +49,19 @@ else
     BACKUP_PATH="$BACKUP_BASE/$USER_NAME"
 fi
 BACKUP_DATE=$(date +%Y-%m-%d)
-PATH_DesktopLayout_BACKUP="$BACKUP_PATH/DesktopLayout/$BACKUP_DATE"
+PATH_LaunchpadLayout_BACKUP="$BACKUP_PATH/LaunchpadLayout/$BACKUP_DATE"
 
 #----------------------
 # 源文件的路径
 #----------------------
-PATH_DesktopLayout_plist_SOURCE="$HOME/Library/Preferences"
+PATH_LaunchpadLayout_plist_SOURCE="$HOME/Library/Preferences"
 
 # 从 TMPDIR 中提取用户特定的 ID
 USER_ID=$(basename "$(dirname "$TMPDIR")")
 # 查找包含该 ID 的父目录
 PARENT_DIR=$(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$USER_ID" 2>/dev/null)
 # 设置 Launchpad 布局源路径
-PATH_DesktopLayout_db_SOURCE="$PARENT_DIR/0"
+PATH_LaunchpadLayout_db_SOURCE="$PARENT_DIR/0"
 
 # 命令行等效命令
 # echo -e $(find $(find /System/Volumes/Data/private/var/folders/ -maxdepth 2 -type d -name "$(basename "$(dirname "$TMPDIR")")" 2>/dev/null) -maxdepth 2 -type d -name "com.apple.dock.launchpad" 2>/dev/null)
@@ -74,19 +74,19 @@ parent_path=$(dirname "$SCRIPT_PATH")
 #----------------------
 
 mkdir -p "$BACKUP_PATH"
-mkdir -p "$PATH_DesktopLayout_BACKUP"
+mkdir -p "$PATH_LaunchpadLayout_BACKUP"
 
 
 #----------------------
 # 执行备份操作
 #----------------------
 
-cp -rf "$PATH_DesktopLayout_plist_SOURCE/com.apple.spaces.plist"  "$PATH_DesktopLayout_BACKUP/"
-cp -rf "$PATH_DesktopLayout_plist_SOURCE/com.apple.dock.plist"  "$PATH_DesktopLayout_BACKUP/"
-sudo cp -rf "$PATH_DesktopLayout_db_SOURCE/com.apple.dock.launchpad"  "$PATH_DesktopLayout_BACKUP/"
-cp "$SCRIPT_PATH" "$PATH_DesktopLayout_BACKUP/"
-cp "$parent_path/usercmd_restore_DesktopLayout" "$PATH_DesktopLayout_BACKUP/"
-cd "$PATH_DesktopLayout_BACKUP"
+cp -rf "$PATH_LaunchpadLayout_plist_SOURCE/com.apple.spaces.plist"  "$PATH_LaunchpadLayout_BACKUP/"
+cp -rf "$PATH_LaunchpadLayout_plist_SOURCE/com.apple.dock.plist"  "$PATH_LaunchpadLayout_BACKUP/"
+sudo cp -rf "$PATH_LaunchpadLayout_db_SOURCE/com.apple.dock.launchpad"  "$PATH_LaunchpadLayout_BACKUP/"
+cp "$SCRIPT_PATH" "$PATH_LaunchpadLayout_BACKUP/"
+cp "$parent_path/usercmd_restore_LaunchpadLayout" "$PATH_LaunchpadLayout_BACKUP/"
+cd "$PATH_LaunchpadLayout_BACKUP"
 sudo chmod -R 755 ./com.apple.dock.launchpad
 
 
@@ -95,7 +95,7 @@ sudo chmod -R 755 ./com.apple.dock.launchpad
 #----------------------
 
 echo -e "备份 “桌面图标” 已完成！！！"
-ls -l "$PATH_DesktopLayout_BACKUP"
+ls -l "$PATH_LaunchpadLayout_BACKUP"
 
 
 #----------------------
@@ -106,4 +106,4 @@ echo -e ""
 echo -e "TMPDIR: $TMPDIR"
 echo -e "USER_ID: $USER_ID"
 echo -e "PARENT_DIR: $PARENT_DIR"
-echo -e "PATH_DesktopLayout_db_SOURCE: $PATH_DesktopLayout_db_SOURCE"
+echo -e "PATH_LaunchpadLayout_db_SOURCE: $PATH_LaunchpadLayout_db_SOURCE"
